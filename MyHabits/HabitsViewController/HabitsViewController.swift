@@ -9,6 +9,7 @@ import UIKit
 
 class HabitsViewController: UIViewController {
     
+    //MARK: - Properties
     private lazy var addButtonTabBar: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.target = self
@@ -19,20 +20,21 @@ class HabitsViewController: UIViewController {
         return button
     }()
     
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .gray
         
         addButtonTabBarFunc()
 
     }
     
+    //MARK: - Methods
     private func addButtonTabBarFunc() {
         navigationItem.rightBarButtonItems = [addButtonTabBar]
         navigationItem.rightBarButtonItem = addButtonTabBar
     }
-    
     
     @objc func showAddTapped() {
         

@@ -36,8 +36,3 @@ class TabBarNavigation: UITabBarController {
     }
 }
 
-//extension TabBarNavigation: UITabBarControllerDelegate {
-//    
-//    func tabBarController
-//    
-//}
