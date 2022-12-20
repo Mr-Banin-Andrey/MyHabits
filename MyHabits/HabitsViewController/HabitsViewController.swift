@@ -24,9 +24,10 @@ class HabitsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .gray
+        self.view.backgroundColor = .lightGray
         
-        addButtonTabBarFunc()
+        self.addButtonTabBarFunc()
+        self.navigationBarFunc()
 
     }
     
@@ -36,8 +37,21 @@ class HabitsViewController: UIViewController {
         navigationItem.rightBarButtonItem = addButtonTabBar
     }
     
+    private func navigationBarFunc() {
+        self.navigationItem.title = "Сегодня"
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    
+    }
+    
     @objc func showAddTapped() {
+        let addHabit = AddNewHabitViewController()
+        navigationController?.pushViewController(addHabit, animated: true) //present(addHabit, animated: true)
         
     }
 }
+
 

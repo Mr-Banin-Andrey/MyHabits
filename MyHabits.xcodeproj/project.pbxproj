@@ -14,6 +14,7 @@
 		9D85D8A72949016A008A97E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D85D8A62949016A008A97E8 /* Assets.xcassets */; };
 		9D85D8AA2949016A008A97E8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D85D8A82949016A008A97E8 /* LaunchScreen.storyboard */; };
 		9D85D8B229490E57008A97E8 /* HabitsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D85D8B129490E57008A97E8 /* HabitsStore.swift */; };
+		9D8BBB422951DD0400F7130E /* AddNewHabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8BBB412951DD0400F7130E /* AddNewHabitViewController.swift */; };
 		9D8F8777294B8B4D00673AD1 /* TabBarNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F8776294B8B4D00673AD1 /* TabBarNavigation.swift */; };
 		9D8F877D294BC81B00673AD1 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F877C294BC81B00673AD1 /* InfoViewController.swift */; };
 		9D8F877F294BC87600673AD1 /* HabitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F877E294BC87600673AD1 /* HabitsViewController.swift */; };
@@ -31,6 +32,7 @@
 		9D85D8A92949016A008A97E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D85D8AB2949016A008A97E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D85D8B129490E57008A97E8 /* HabitsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsStore.swift; sourceTree = "<group>"; };
+		9D8BBB412951DD0400F7130E /* AddNewHabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewHabitViewController.swift; sourceTree = "<group>"; };
 		9D8F8776294B8B4D00673AD1 /* TabBarNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigation.swift; sourceTree = "<group>"; };
 		9D8F877C294BC81B00673AD1 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		9D8F877E294BC87600673AD1 /* HabitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			children = (
 				9D85D8B129490E57008A97E8 /* HabitsStore.swift */,
 				9D8F877E294BC87600673AD1 /* HabitsViewController.swift */,
+				9D8BBB412951DD0400F7130E /* AddNewHabitViewController.swift */,
 			);
 			path = HabitsViewController;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 			files = (
 				9D85D8B229490E57008A97E8 /* HabitsStore.swift in Sources */,
 				9D85D8A229490168008A97E8 /* ViewController.swift in Sources */,
+				9D8BBB422951DD0400F7130E /* AddNewHabitViewController.swift in Sources */,
 				9D8F8781294CBE5C00673AD1 /* InfoCustomTableViewCell.swift in Sources */,
 				9D8F87872950CDFA00673AD1 /* InfoCustomHeaderView.swift in Sources */,
 				9D8F877F294BC87600673AD1 /* HabitsViewController.swift in Sources */,
