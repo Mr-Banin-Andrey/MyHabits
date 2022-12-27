@@ -13,8 +13,8 @@ class AddNewHabitViewController: UIViewController {
         let button = UIBarButtonItem()
         button.target = self
         button.style = .plain
-        button.title = "Сохранить" 
-        button.action = #selector(showAddTapped)
+        button.title = "Сохранить"
+        button.action = #selector(saveHabit)
         button.tintColor = #colorLiteral(red: 0.631372549, green: 0.0862745098, blue: 0.8, alpha: 1)
         return button
     }()
@@ -24,16 +24,22 @@ class AddNewHabitViewController: UIViewController {
         button.target = self
         button.style = .plain
         button.title = "Отменить"
-        button.action = #selector(showAddTapped)
+        button.action = #selector(cancelDo)
         button.tintColor = #colorLiteral(red: 0.631372549, green: 0.0862745098, blue: 0.8, alpha: 1)
         return button
     }()
     
+    override func loadView() {
+        super.loadView()
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tabBarController?.tabBar.isHidden = true
         view.backgroundColor = .purple
-        
+//        tabBarController?.tabBar.isHidden = false
+//        tabBarController?.navigationController.isHidden = true
         navigationBarFunc()
         saveButtonTabBarFunc()
         cancelButtonTabBarFunc()
@@ -58,6 +64,17 @@ class AddNewHabitViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
     }
     
-    @objc func showAddTapped() {
+    @objc func saveHabit(){
+        
+    }
+    
+    @objc func cancelDo() {
+        let transition:CATransition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.reveal
+        transition.subtype = CATransitionSubtype.fromBottom
+        self.navigationController?.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.popViewController(animated: false)
     }
 }
