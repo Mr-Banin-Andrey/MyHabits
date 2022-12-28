@@ -55,14 +55,9 @@ class HabitsViewController: UIViewController {
     
     @objc func addHabit() {
         let addHabit = AddNewHabitViewController()
-        
-        let transition:CATransition = CATransition()
-        transition.duration = 0.5
-        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromTop
-        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
-        self.navigationController?.pushViewController(addHabit, animated: false)
+        let navСontroller = UINavigationController(rootViewController: addHabit)
+        navСontroller.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(navСontroller, animated: true, completion: nil)
     }
 }
 
