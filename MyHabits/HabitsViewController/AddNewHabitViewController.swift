@@ -42,7 +42,6 @@ class AddNewHabitViewController: UIViewController {
     private lazy var nameHabitText: UITextField = {
         let nameHabitText = UITextField()
         nameHabitText.placeholder = "Бегать по утрам, спать 8 часов и т.п."
-//        nameHabitText.te
         nameHabitText.translatesAutoresizingMaskIntoConstraints = false
         nameHabitText.font = .systemFont(ofSize: 17)
         nameHabitText.textColor = .black
@@ -112,6 +111,10 @@ class AddNewHabitViewController: UIViewController {
         return datePicker
     }()
     
+    private var variableText: String = ""
+    private var variableColor: UIColor = .black
+    private var variableTime = Date()
+    
     //MARK: - Life cycle
     
     override func viewDidLoad() {
@@ -178,9 +181,17 @@ class AddNewHabitViewController: UIViewController {
     }
     
     @objc func saveHabit(){
-//        print(self.nameHabitText.text)
-//        print(self.cycleColorButton.)
-//        print(self.timeLabel.text)
+        
+        if self.nameHabitText.text != nil {
+            variableText = self.nameHabitText.text!
+        }
+        
+        let newHabit = Habit(name: variableText, date: variableTime, color: variableColor)
+        let store = HabitsStore.shared
+        store.habits.append(newHabit)
+
+        print(newHabit)
+        self.dismiss(animated: true)
     }
     
     @objc func cancelDo() {
@@ -198,11 +209,9 @@ class AddNewHabitViewController: UIViewController {
         time.dateFormat = "HH:MM AM/PM"
         time.timeStyle = .short
         self.timeLabel.text = time.string(from: self.datePicker.date)
+        
+        variableTime = self.datePicker.date
     }
-    
-//    let newHabit = Habit(name: "Выпить стакан воды перед завтраком", date: Date(), color: .systemRed)
-//    let store = HabitsStore.shared
-//    store.habits.append(newHabit)
 }
 
 
@@ -211,7 +220,7 @@ extension AddNewHabitViewController: UIColorPickerViewControllerDelegate {
     internal func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         let color = viewController.selectedColor
         cycleColorButton.backgroundColor = color
-        print(cycleColorButton.backgroundColor = color)
+        variableColor = color
     }
     
 }
