@@ -211,6 +211,7 @@ class AddNewHabitViewController: UIViewController {
         self.timeLabel.text = time.string(from: self.datePicker.date)
         
         variableTime = self.datePicker.date
+        print(variableTime)
     }
 }
 
@@ -221,6 +222,7 @@ extension AddNewHabitViewController: UIColorPickerViewControllerDelegate {
         let color = viewController.selectedColor
         cycleColorButton.backgroundColor = color
         variableColor = color
+        print(variableColor)
     }
     
 }
