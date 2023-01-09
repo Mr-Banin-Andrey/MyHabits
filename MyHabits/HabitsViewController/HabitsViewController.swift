@@ -27,29 +27,30 @@ class HabitsViewController: UIViewController {
     private lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-//        layout.minimumInteritemSpacing = 100
         layout.minimumLineSpacing = 12
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        layout.headerReferenceSize = .init(width: wightHeader, height: 60)
         return layout
     }()
     
     private lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
-        collection.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: "progressID")
         collection.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: "habitID")
         collection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "defaultID")
+        collection.register(ProgressCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerID")
         collection.delegate = self
         collection.dataSource = self
         collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.backgroundColor = .systemBackground
         return collection
     }()
+    
+    lazy var wightHeader: CGFloat = 0
     
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.backgroundColor = .lightGray
-        
+                
         self.addButtonTabBarFunc()
         self.navigationBarFunc()
         
@@ -62,8 +63,6 @@ class HabitsViewController: UIViewController {
         
         self.setupCollection()
         print(HabitsStore.shared.habits.count)
-     
-        
 
 //        tabBarController?.tabBar.isHidden = false
     }
@@ -81,11 +80,9 @@ class HabitsViewController: UIViewController {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-    
     }
     
     private func setupCollection() {
-        self.view.backgroundColor = .systemBackground
         self.view.addSubview(collectionView)
 
         NSLayoutConstraint.activate([
@@ -109,34 +106,26 @@ class HabitsViewController: UIViewController {
 extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        HabitsStore.shared.habits.count + 1
+        HabitsStore.shared.habits.count 
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "progressID", for: indexPath) as? ProgressCollectionViewCell else {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultID", for: indexPath)
-                return cell
-            }
-            
-            cell.layer.cornerRadius = 8
-            cell.clipsToBounds = true
-            cell.backgroundColor = .white
-//            cell.setup(with: self.dataSource[indexPath.row])
-            return cell
-        }
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "habitID", for: indexPath) as? HabitCollectionViewCell else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultID", for: indexPath)
             return cell
         }
         
+        let habits = HabitsStore.shared.habits
         
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true
-        cell.backgroundColor = .cyan
-//        cell.setup(with: self.dataSource[indexPath.row])
+        cell.backgroundColor = .systemFill
+        
+        cell.nameHabit.text = habits[indexPath.row].name
+        cell.nameHabit.textColor = habits[indexPath.row].color
+        cell.timeHabit.text = habits[indexPath.row].dateString
+        cell.checkMarkButton.layer.borderColor = habits[indexPath.row].color.cgColor
         return cell
     }
     
@@ -148,9 +137,25 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         let wight = collectionView.frame.width - (Columns.numberOfItemsInLine - 1) * interItemSpacing - insets.left - insets.right
         let itemWight = floor(wight / Columns.numberOfItemsInLine)
         
-        if indexPath.row == 0 {
-            return CGSize(width: itemWight, height: 60)
-        }
+        wightHeader = itemWight
+
         return CGSize(width: itemWight, height: 130)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "headerID", for: indexPath) as? ProgressCollectionViewCell else { return UICollectionReusableView() }
+            
+            view.layer.cornerRadius = 8
+            view.clipsToBounds = true
+            view.backgroundColor = .systemFill
+            return view
+            
+        default:
+            return UICollectionReusableView()
+        }
+    }
+    
 }

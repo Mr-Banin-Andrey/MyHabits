@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProgressCollectionViewCell: UICollectionViewCell {
+class ProgressCollectionViewCell: UICollectionReusableView {
     
     //MARK: - Properties
     private lazy var nameProgressiveView: UILabel = {
@@ -22,7 +22,7 @@ class ProgressCollectionViewCell: UICollectionViewCell {
     private lazy var progressView: UIProgressView = {
         let progress = UIProgressView()
         progress.progressTintColor = #colorLiteral(red: 0.631372549, green: 0.0862745098, blue: 0.8, alpha: 1)
-//        progress.sizeToFit()
+        progress.sizeToFit()
         progress.translatesAutoresizingMaskIntoConstraints = false
         return progress
     }()
@@ -32,7 +32,7 @@ class ProgressCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         self.setupConstraints()
-        
+
     }
     
     required init?(coder: NSCoder) {
@@ -46,13 +46,14 @@ class ProgressCollectionViewCell: UICollectionViewCell {
         self.addSubview(self.progressView)
         
         NSLayoutConstraint.activate([
-            self.nameProgressiveView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
-            self.nameProgressiveView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 12),
+                        
+            self.nameProgressiveView.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
+            self.nameProgressiveView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             
             self.progressView.topAnchor.constraint(equalTo: self.nameProgressiveView.bottomAnchor, constant: 12),
-            self.progressView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 12),
-            self.progressView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -12),
-            self.progressView.widthAnchor.constraint(equalToConstant: 250)
+            self.progressView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16),
+            self.progressView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16)
+//            self.progressView.widthAnchor.constraint(equalToConstant: 250)
         ])
     }
     
