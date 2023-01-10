@@ -29,7 +29,7 @@ class HabitsViewController: UIViewController {
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 12
         layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        layout.headerReferenceSize = .init(width: wightHeader, height: 60)
+        layout.headerReferenceSize = .init(width: wightHeader, height: 82)
         return layout
     }()
     
@@ -41,7 +41,7 @@ class HabitsViewController: UIViewController {
         collection.delegate = self
         collection.dataSource = self
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.backgroundColor = .systemBackground
+        collection.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         return collection
     }()
     
@@ -66,6 +66,21 @@ class HabitsViewController: UIViewController {
 
 //        tabBarController?.tabBar.isHidden = false
     }
+
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//
+//        self.setupCollection()
+//    }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        self.setupCollection()
+//    }
+//    
+//    deinit {
+//            print("deinit \(self)")
+//    }
     
     //MARK: - Methods
     private func addButtonTabBarFunc() {
@@ -120,7 +135,7 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true
-        cell.backgroundColor = .systemFill
+        cell.backgroundColor = .white
         
         cell.nameHabit.text = habits[indexPath.row].name
         cell.nameHabit.textColor = habits[indexPath.row].color
@@ -150,7 +165,6 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
             
             view.layer.cornerRadius = 8
             view.clipsToBounds = true
-            view.backgroundColor = .systemFill
             return view
             
         default:

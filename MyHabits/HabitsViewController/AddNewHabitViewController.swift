@@ -112,7 +112,7 @@ class AddNewHabitViewController: UIViewController {
     }()
     
     private var variableText: String = ""
-    private var variableColor: UIColor = .black
+    private var variableColor: UIColor = .systemOrange
     private var variableTime = Date()
     
     //MARK: - Life cycle
@@ -125,6 +125,10 @@ class AddNewHabitViewController: UIViewController {
         self.setupConstraints()
     }
     
+//    deinit {
+//        print("deinit \(self)")
+//    }
+//
     //MARK: - Methods
     
     private func navigationController() {
@@ -181,6 +185,9 @@ class AddNewHabitViewController: UIViewController {
     }
     
     @objc func saveHabit(){
+        
+//        let habitsVC = HabitsViewController()
+//        habitsVC.viewDidLoad()
         
         if self.nameHabitText.text != nil {
             variableText = self.nameHabitText.text!

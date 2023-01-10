@@ -42,7 +42,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.borderWidth = 2.5
-        button.layer.borderColor = UIColor.systemRed.cgColor
+//        button.layer.borderColor = UIColor.systemRed.cgColor
         button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(completedHabit), for: .touchUpInside)
         return button
@@ -100,8 +100,25 @@ class HabitCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func completedHabit() {
-
+        
+//        var perem = 0
+        
+        let progressCollectionViewCell = ProgressCollectionViewCell()
+        
+        let habitsCount = HabitsStore.shared.habits.count
+        
+//        let pointProgress = 1 / habitsCount
+        
+        
+        let progress = HabitsStore.shared.todayProgress
+        
+        print(habitsCount, "- progress")
         print("hello_cell")
+        print(progress)
+        
+//        progressCollectionViewCell.progressView.progress 
+        print(progressCollectionViewCell.progressView.progress)
+        
         checkMarkButton.setImage(.init(systemName: "checkmark"), for: .normal)
         checkMarkButton.tintColor = .white
         checkMarkButton.backgroundColor = .systemRed
