@@ -1,5 +1,5 @@
 //
-//  AddNewHabitViewController.swift
+//  HabitViewController.swift
 //  MyHabits
 //
 //  Created by Андрей Банин on 20.12.22..
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddNewHabitViewController: UIViewController {
+class HabitViewController: UIViewController {
     
     //MARK: - Properties
     private lazy var saveButtonTabBar: UIBarButtonItem = {
@@ -95,10 +95,10 @@ class AddNewHabitViewController: UIViewController {
     
     private lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "10:09 AM"
         label.textColor = #colorLiteral(red: 0.631372549, green: 0.0862745098, blue: 0.8, alpha: 1)
         label.font = .systemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = realTimeVar
         return label
     }()
     
@@ -114,12 +114,14 @@ class AddNewHabitViewController: UIViewController {
     private var variableText: String = ""
     private var variableColor: UIColor = .systemOrange
     private var variableTime = Date()
+    private var realTimeVar = ""
     
     //MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.realTime()
         self.view.backgroundColor = .systemBackground
         self.navigationController()
         self.setupConstraints()
@@ -164,6 +166,7 @@ class AddNewHabitViewController: UIViewController {
             
             self.nameHabitText.topAnchor.constraint(equalTo: self.nameHabitLabel.bottomAnchor, constant: 8),
             self.nameHabitText.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            self.nameHabitText.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
             
             self.colorNameLabel.topAnchor.constraint(equalTo: self.nameHabitText.bottomAnchor, constant: 16),
             self.colorNameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
@@ -184,6 +187,15 @@ class AddNewHabitViewController: UIViewController {
         ])
     }
     
+    private func realTime() {
+        let date = Date()
+        let df = DateFormatter()
+        df.dateFormat = "HH:MM AM/PM"
+        df.timeStyle = .short
+        realTimeVar = df.string(from: date)
+    }
+    
+    
     @objc func saveHabit(){
         
 //        let habitsVC = HabitsViewController()
@@ -199,6 +211,8 @@ class AddNewHabitViewController: UIViewController {
 
         print(newHabit)
         self.dismiss(animated: true)
+        
+        
     }
     
     @objc func cancelDo() {
@@ -223,7 +237,7 @@ class AddNewHabitViewController: UIViewController {
 }
 
 
-extension AddNewHabitViewController: UIColorPickerViewControllerDelegate {
+extension HabitViewController: UIColorPickerViewControllerDelegate {
     
     internal func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         let color = viewController.selectedColor

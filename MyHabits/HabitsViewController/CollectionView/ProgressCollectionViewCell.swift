@@ -22,9 +22,7 @@ class ProgressCollectionViewCell: UICollectionReusableView {
     lazy var progressView: UIProgressView = {
         let progress = UIProgressView(progressViewStyle: .default)
         progress.progressTintColor = #colorLiteral(red: 0.631372549, green: 0.0862745098, blue: 0.8, alpha: 1)
-//        progress.sizeToFit()
         progress.translatesAutoresizingMaskIntoConstraints = false
-//        progress.perform(#selector(progressViewFunc), with: nil, afterDelay: 0.2)
         progress.progress = HabitsStore.shared.todayProgress
         return progress
     }()
@@ -44,7 +42,6 @@ class ProgressCollectionViewCell: UICollectionReusableView {
         super.init(frame: frame)
         
         self.setupConstraints()
-
     }
     
     required init?(coder: NSCoder) {
@@ -72,10 +69,5 @@ class ProgressCollectionViewCell: UICollectionReusableView {
             self.progressView.leftAnchor.constraint(equalTo: self.backView.leftAnchor, constant: 16),
             self.progressView.rightAnchor.constraint(equalTo: self.backView.rightAnchor, constant: -16)
         ])
-    }
-    
-    @objc func progressViewFunc() {
-//        let abs: Float = 0.8
-//        progressView.progress = 0 + abs
     }
 }

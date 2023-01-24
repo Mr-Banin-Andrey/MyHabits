@@ -10,41 +10,64 @@ import UIKit
 class HabitCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
-    lazy var nameHabit: UILabel = {
+    private lazy var nameHabit: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .boldSystemFont(ofSize: 17)
         label.numberOfLines = 2
-        label.text = "one"
-        label.textColor = .systemRed
         return label
     }()
     
-    lazy var timeHabit: UILabel = {
+    private lazy var timeHabit: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .systemGray
         label.font = .systemFont(ofSize: 12)
-        label.text = "two"
         return label
     }()
     
-    lazy var counter: UILabel = {
+    private lazy var counter: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .systemGray
         label.font = .systemFont(ofSize: 13)
-        label.text = "three"
         return label
     }()
+    
+//    lazy var checkMarkLabel: UIImageView = {
+//        let label = UIImageView()
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.backgroundColor = .cyan
+////        label.layer.cornerRadius = 16
+////        label.layer.borderWidth = 1
+//        label.clipsToBounds = true
+////        label.isUserInteractionEnabled = true
+//        label.isHidden = true
+//        label.layer.borderWidth = 2.5
+//        label.layer.borderColor = UIColor.systemRed.cgColor
+//        label.layer.cornerRadius = 18
+////        label.addTarget(self, action: #selector(completedHabit), for: .touchUpInside)
+//        return label
+//    }()
+//
+//    lazy var cornerRadiusLabel: UIView = {
+//        let view = UIView()
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.layer.cornerRadius = 19
+//        view.layer.borderWidth = 2.5
+//        view.isUserInteractionEnabled = true
+//        return view
+//    }()
     
     lazy var checkMarkButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 19
         button.layer.borderWidth = 2.5
-//        button.layer.borderColor = UIColor.systemRed.cgColor
-        button.layer.cornerRadius = 18
+        button.clipsToBounds = true
         button.addTarget(self, action: #selector(completedHabit), for: .touchUpInside)
+        button.setImage(.init(systemName: "checkmark"), for: .normal)
+        button.tintColor = .white
         return button
     }()
     
@@ -87,7 +110,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
             
             self.nameHabit.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 20),
             self.nameHabit.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
-            self.nameHabit.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40),
+            self.nameHabit.trailingAnchor.constraint(equalTo: self.checkMarkButton.leadingAnchor, constant: -40),
 
             self.timeHabit.topAnchor.constraint(equalTo: self.nameHabit.bottomAnchor, constant: 4),
             self.timeHabit.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
@@ -99,29 +122,41 @@ class HabitCollectionViewCell: UICollectionViewCell {
 
     }
     
-    @objc func completedHabit() {
+    func setup(index: Int) {
         
-//        var perem = 0
+        self.nameHabit.tag = index
         
-        let progressCollectionViewCell = ProgressCollectionViewCell()
+        self.nameHabit.text = HabitsStore.shared.habits[index].name
+        self.nameHabit.textColor = HabitsStore.shared.habits[index].color
+        self.timeHabit.text = HabitsStore.shared.habits[index].dateString
+        self.checkMarkButton.layer.borderColor = HabitsStore.shared.habits[index].color.cgColor
+        self.counter.text = "Счётчик: \(HabitsStore.shared.habits[index].trackDates.count)"
         
-        let habitsCount = HabitsStore.shared.habits.count
-        
-//        let pointProgress = 1 / habitsCount
-        
-        
-        let progress = HabitsStore.shared.todayProgress
-        
-        print(habitsCount, "- progress")
-        print("hello_cell")
-        print(progress)
-        
-//        progressCollectionViewCell.progressView.progress 
-        print(progressCollectionViewCell.progressView.progress)
-        
-        checkMarkButton.setImage(.init(systemName: "checkmark"), for: .normal)
-        checkMarkButton.tintColor = .white
-        checkMarkButton.backgroundColor = .systemRed
+        if HabitsStore.shared.habits[index].isAlreadyTakenToday {
+            checkMarkButton.backgroundColor = UIColor(cgColor: checkMarkButton.layer.borderColor ?? UIColor.white.cgColor)
+        } else {
+            checkMarkButton.backgroundColor = .white
+        }
     }
     
+    @objc func completedHabit() {
+        
+        let index = nameHabit.tag
+
+        if HabitsStore.shared.habits[index].isAlreadyTakenToday {
+            print("comleted")
+        } else {
+            checkMarkButton.backgroundColor = UIColor(cgColor: checkMarkButton.layer.borderColor ?? UIColor.white.cgColor)
+            HabitsStore.shared.track(HabitsStore.shared.habits[index])
+            self.counter.text = "Счётчик: \(HabitsStore.shared.habits[index].trackDates.count)"
+            
+            let progress = ProgressCollectionViewCell()
+            progress.progressView.progress = HabitsStore.shared.todayProgress
+            
+        }
+
+//        полная очистка таблицы
+//        var habits = HabitsStore.shared
+//        habits.habits.removeAll()
+    }
 }

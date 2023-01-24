@@ -61,26 +61,12 @@ class HabitsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.setupCollection()
         print(HabitsStore.shared.habits.count)
-
+        self.setupCollection()
+        self.navigationBarFunc()
+        self.collectionView.reloadData()
 //        tabBarController?.tabBar.isHidden = false
     }
-
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//
-//        self.setupCollection()
-//    }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        self.setupCollection()
-//    }
-//    
-//    deinit {
-//            print("deinit \(self)")
-//    }
     
     //MARK: - Methods
     private func addButtonTabBarFunc() {
@@ -109,9 +95,8 @@ class HabitsViewController: UIViewController {
     }
     
     
-    
     @objc func addHabit() {
-        let addHabit = AddNewHabitViewController()
+        let addHabit = HabitViewController()
         let navСontroller = UINavigationController(rootViewController: addHabit)
         navСontroller.modalPresentationStyle = .fullScreen
         self.navigationController?.present(navСontroller, animated: true, completion: nil)
@@ -131,16 +116,13 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
             return cell
         }
         
-        let habits = HabitsStore.shared.habits
         
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true
         cell.backgroundColor = .white
         
-        cell.nameHabit.text = habits[indexPath.row].name
-        cell.nameHabit.textColor = habits[indexPath.row].color
-        cell.timeHabit.text = habits[indexPath.row].dateString
-        cell.checkMarkButton.layer.borderColor = habits[indexPath.row].color.cgColor
+        cell.setup(index: indexPath.row)
+
         return cell
     }
     
@@ -170,6 +152,17 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         default:
             return UICollectionReusableView()
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+//        let addHabit = HabitDetailsViewController()
+//        let navСontroller = UINavigationController(rootViewController: addHabit)
+//        navСontroller.modalPresentationStyle = .fullScreen
+//        self.navigationController?.present(navСontroller, animated: true, completion: nil)
+        
+        let showPhotosViewController = HabitDetailsViewController()
+        navigationController?.pushViewController(showPhotosViewController, animated: true)
     }
     
 }
