@@ -29,15 +29,14 @@ class HabitsViewController: UIViewController {
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 12
         layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        layout.headerReferenceSize = .init(width: wightHeader, height: 82)
         return layout
     }()
     
     private lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
+        collection.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: "progressID")
         collection.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: "habitID")
         collection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "defaultID")
-        collection.register(ProgressCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerID")
         collection.delegate = self
         collection.dataSource = self
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -45,8 +44,9 @@ class HabitsViewController: UIViewController {
         return collection
     }()
     
-    lazy var wightHeader: CGFloat = 0
+    private var wightHeader: CGFloat = 0
     
+    var realTimeVar = "0"
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,23 +55,32 @@ class HabitsViewController: UIViewController {
         self.navigationBarFunc()
         
         self.setupCollection()
-
+        
+//        print("trackDate-----", HabitsStore.shared.habits[1].trackDates)
+//        print("habits[1].date-----", HabitsStore.shared.habits[1].date)
+//        print("dates.count-----", HabitsStore.shared.dates.count)
+        print("Count.Habits, \(HabitsStore.shared.habits.count)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        print(HabitsStore.shared.habits.count)
         self.setupCollection()
         self.navigationBarFunc()
         self.collectionView.reloadData()
-//        tabBarController?.tabBar.isHidden = false
+        
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     //MARK: - Methods
     private func addButtonTabBarFunc() {
         navigationItem.rightBarButtonItems = [addButtonTabBar]
         navigationItem.rightBarButtonItem = addButtonTabBar
+    }
+    
+    private func progressView() {
+        let progressCell = ProgressCollectionViewCell()
+        progressCell.progressView.progress = HabitsStore.shared.todayProgress
     }
     
     private func navigationBarFunc() {
@@ -104,25 +113,47 @@ class HabitsViewController: UIViewController {
 }
 
 extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        HabitsStore.shared.habits.count 
+        if section == 0 { return 1 }
+        if section == 1 { return HabitsStore.shared.habits.count }
+        return 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "habitID", for: indexPath) as? HabitCollectionViewCell else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultID", for: indexPath)
+        if indexPath.section == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "progressID", for: indexPath) as? ProgressCollectionViewCell else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultID", for: indexPath)
+                return cell
+            }
+            
+            cell.layer.cornerRadius = 8
+            cell.clipsToBounds = true
+            cell.backgroundColor = .white
+            cell.progressView.progress = HabitsStore.shared.todayProgress
             return cell
         }
         
+        if indexPath.section == 1 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "habitID", for: indexPath) as? HabitCollectionViewCell else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultID", for: indexPath)
+                return cell
+            }
+            
+            cell.layer.cornerRadius = 8
+            cell.clipsToBounds = true
+            cell.backgroundColor = .white
+            
+            cell.setup(index: indexPath.row)
+            return cell
+        }
         
-        cell.layer.cornerRadius = 8
-        cell.clipsToBounds = true
-        cell.backgroundColor = .white
-        
-        cell.setup(index: indexPath.row)
-
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultId", for: indexPath)
         return cell
     }
     
@@ -136,33 +167,22 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         
         wightHeader = itemWight
 
+        if indexPath.section == 0 {
+            return CGSize(width: itemWight, height: 65)
+        }
+        
         return CGSize(width: itemWight, height: 130)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "headerID", for: indexPath) as? ProgressCollectionViewCell else { return UICollectionReusableView() }
-            
-            view.layer.cornerRadius = 8
-            view.clipsToBounds = true
-            return view
-            
-        default:
-            return UICollectionReusableView()
-        }
-    }
+
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-//        let addHabit = HabitDetailsViewController()
-//        let navСontroller = UINavigationController(rootViewController: addHabit)
-//        navСontroller.modalPresentationStyle = .fullScreen
-//        self.navigationController?.present(navСontroller, animated: true, completion: nil)
-        
-        let showPhotosViewController = HabitDetailsViewController()
-        navigationController?.pushViewController(showPhotosViewController, animated: true)
+        if indexPath.section == 1 {
+            let habitDetailsVC = HabitDetailsViewController()
+            habitDetailsVC.numberHabitDetailsVC = indexPath.row
+            habitDetailsVC.navigationItem.title = HabitsStore.shared.habits[indexPath.row].name
+            navigationController?.pushViewController(habitDetailsVC, animated: true)
+        }
     }
     
 }

@@ -24,6 +24,7 @@
 		9D8F87872950CDFA00673AD1 /* InfoCustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F87862950CDFA00673AD1 /* InfoCustomHeaderView.swift */; };
 		9DFD2681297B2F1B00AF03F3 /* HabitDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFD2680297B2F1B00AF03F3 /* HabitDetailsViewController.swift */; };
 		9DFD2684298042F000AF03F3 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFD2683298042F000AF03F3 /* CustomTableViewCell.swift */; };
+		9DFD26862982F66C00AF03F3 /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFD26852982F66C00AF03F3 /* CustomHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		9D8F87862950CDFA00673AD1 /* InfoCustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCustomHeaderView.swift; sourceTree = "<group>"; };
 		9DFD2680297B2F1B00AF03F3 /* HabitDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailsViewController.swift; sourceTree = "<group>"; };
 		9DFD2683298042F000AF03F3 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		9DFD26852982F66C00AF03F3 /* CustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 			children = (
 				9DFD2680297B2F1B00AF03F3 /* HabitDetailsViewController.swift */,
 				9DFD2683298042F000AF03F3 /* CustomTableViewCell.swift */,
+				9DFD26852982F66C00AF03F3 /* CustomHeaderView.swift */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				9D8F877F294BC87600673AD1 /* HabitsViewController.swift in Sources */,
 				9D85D89E29490168008A97E8 /* AppDelegate.swift in Sources */,
 				9D85D8A029490168008A97E8 /* SceneDelegate.swift in Sources */,
+				9DFD26862982F66C00AF03F3 /* CustomHeaderView.swift in Sources */,
 				9DFD2684298042F000AF03F3 /* CustomTableViewCell.swift in Sources */,
 				9D8F877D294BC81B00673AD1 /* InfoViewController.swift in Sources */,
 				9D8F8777294B8B4D00673AD1 /* TabBarNavigation.swift in Sources */,

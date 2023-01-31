@@ -70,7 +70,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
         button.tintColor = .white
         return button
     }()
-    
+        
     //MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -84,15 +84,16 @@ class HabitCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Methods
     
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//
-//        self.nameHabit.text = nil
-//        self.descriptionLabel.text = nil
-//        self.imagePhotoView.image = nil
-//        self.viewsAmountLabel.text = nil
-//        self.likesAmountLabel.text = nil
-//    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        self.nameHabit.text = nil
+        self.nameHabit.textColor = nil
+        self.timeHabit.text = nil
+        self.checkMarkButton.layer.borderColor = nil
+        self.checkMarkButton.backgroundColor = nil
+        self.counter.text = nil
+    }
     
     private func setupConstraints() {
         
@@ -128,7 +129,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
         
         self.nameHabit.text = HabitsStore.shared.habits[index].name
         self.nameHabit.textColor = HabitsStore.shared.habits[index].color
-        self.timeHabit.text = HabitsStore.shared.habits[index].dateString
+        self.timeHabit.text = "Каждый день в \(HabitsStore.shared.habits[index].dateString)"
         self.checkMarkButton.layer.borderColor = HabitsStore.shared.habits[index].color.cgColor
         self.counter.text = "Счётчик: \(HabitsStore.shared.habits[index].trackDates.count)"
         
@@ -149,10 +150,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
             checkMarkButton.backgroundColor = UIColor(cgColor: checkMarkButton.layer.borderColor ?? UIColor.white.cgColor)
             HabitsStore.shared.track(HabitsStore.shared.habits[index])
             self.counter.text = "Счётчик: \(HabitsStore.shared.habits[index].trackDates.count)"
-            
-            let progress = ProgressCollectionViewCell()
-            progress.progressView.progress = HabitsStore.shared.todayProgress
-            
+        
         }
 
 //        полная очистка таблицы

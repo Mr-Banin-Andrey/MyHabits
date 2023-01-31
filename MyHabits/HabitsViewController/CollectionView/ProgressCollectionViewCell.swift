@@ -7,9 +7,11 @@
 
 import UIKit
 
-class ProgressCollectionViewCell: UICollectionReusableView {
+class ProgressCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
+    
+    
     private lazy var nameProgressiveView: UILabel = {
         let label = UILabel()
         label.text = "Всё получится!"
@@ -24,18 +26,12 @@ class ProgressCollectionViewCell: UICollectionReusableView {
         progress.progressTintColor = #colorLiteral(red: 0.631372549, green: 0.0862745098, blue: 0.8, alpha: 1)
         progress.translatesAutoresizingMaskIntoConstraints = false
         progress.progress = HabitsStore.shared.todayProgress
+        progress.tag = 123
+//        progress.performSelector(onMainThread: #selector(progressDownload), with: self, waitUntilDone: true)
         return progress
     }()
     
-    private lazy var backView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 8
-        view.tintColor = .red
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+
     
     //MARK: - Life cycle
     override init(frame: CGRect) {
@@ -51,23 +47,17 @@ class ProgressCollectionViewCell: UICollectionReusableView {
     //MARK: - Methods
     private func setupConstraints() {
         
-        self.addSubview(self.backView)
-        self.addSubview(self.nameProgressiveView)
-        self.addSubview(self.progressView)
+        self.contentView.addSubview(self.nameProgressiveView)
+        self.contentView.addSubview(self.progressView)
         
         NSLayoutConstraint.activate([
             
-            self.backView.topAnchor.constraint(equalTo: self.topAnchor, constant: 21.5),
-            self.backView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            self.backView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            self.backView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            
-            self.nameProgressiveView.topAnchor.constraint(equalTo: self.backView.topAnchor, constant: 12),
-            self.nameProgressiveView.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor, constant: 16),
+            self.nameProgressiveView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
+            self.nameProgressiveView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
 
             self.progressView.topAnchor.constraint(equalTo: self.nameProgressiveView.bottomAnchor, constant: 12),
-            self.progressView.leftAnchor.constraint(equalTo: self.backView.leftAnchor, constant: 16),
-            self.progressView.rightAnchor.constraint(equalTo: self.backView.rightAnchor, constant: -16)
+            self.progressView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
+            self.progressView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
         ])
     }
 }
