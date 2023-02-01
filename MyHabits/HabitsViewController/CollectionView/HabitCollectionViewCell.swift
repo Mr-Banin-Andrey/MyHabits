@@ -33,32 +33,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 13)
         return label
     }()
-    
-//    lazy var checkMarkLabel: UIImageView = {
-//        let label = UIImageView()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.backgroundColor = .cyan
-////        label.layer.cornerRadius = 16
-////        label.layer.borderWidth = 1
-//        label.clipsToBounds = true
-////        label.isUserInteractionEnabled = true
-//        label.isHidden = true
-//        label.layer.borderWidth = 2.5
-//        label.layer.borderColor = UIColor.systemRed.cgColor
-//        label.layer.cornerRadius = 18
-////        label.addTarget(self, action: #selector(completedHabit), for: .touchUpInside)
-//        return label
-//    }()
-//
-//    lazy var cornerRadiusLabel: UIView = {
-//        let view = UIView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.layer.cornerRadius = 19
-//        view.layer.borderWidth = 2.5
-//        view.isUserInteractionEnabled = true
-//        return view
-//    }()
-    
+        
     lazy var checkMarkButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -145,16 +120,12 @@ class HabitCollectionViewCell: UICollectionViewCell {
         let index = nameHabit.tag
 
         if HabitsStore.shared.habits[index].isAlreadyTakenToday {
-            print("comleted")
+            print("comletedHabit")
         } else {
             checkMarkButton.backgroundColor = UIColor(cgColor: checkMarkButton.layer.borderColor ?? UIColor.white.cgColor)
             HabitsStore.shared.track(HabitsStore.shared.habits[index])
             self.counter.text = "Счётчик: \(HabitsStore.shared.habits[index].trackDates.count)"
         
         }
-
-//        полная очистка таблицы
-//        var habits = HabitsStore.shared
-//        habits.habits.removeAll()
     }
 }

@@ -47,19 +47,14 @@ class HabitsViewController: UIViewController {
     private var wightHeader: CGFloat = 0
     
     var realTimeVar = "0"
+    
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
                 
         self.addButtonTabBarFunc()
         self.navigationBarFunc()
-        
         self.setupCollection()
-        
-//        print("trackDate-----", HabitsStore.shared.habits[1].trackDates)
-//        print("habits[1].date-----", HabitsStore.shared.habits[1].date)
-//        print("dates.count-----", HabitsStore.shared.dates.count)
-        print("Count.Habits, \(HabitsStore.shared.habits.count)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +65,11 @@ class HabitsViewController: UIViewController {
         self.collectionView.reloadData()
         
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
     //MARK: - Methods

@@ -111,9 +111,9 @@ class HabitViewController: UIViewController {
         return datePicker
     }()
     
-    private var variableText: String = ""
-    private var variableColor: UIColor = .systemOrange
-    private var variableTime = Date()
+    var variableText: String = ""
+    var variableColor: UIColor = .systemOrange
+    var variableTime = Date()
     private var realTimeVar = ""
     
     var numberHabitVC = 0
@@ -142,8 +142,6 @@ class HabitViewController: UIViewController {
         self.navigationController()
         self.setupConstraints()
         self.setupAlertController()
-        
-        print(numberHabitVC)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -206,7 +204,7 @@ class HabitViewController: UIViewController {
             self.datePicker.topAnchor.constraint(equalTo: self.timeNameLabel.bottomAnchor, constant: 16),
             self.datePicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             
-            self.deleteHabitButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -16),
+            self.deleteHabitButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24),
             self.deleteHabitButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
     }
@@ -229,9 +227,6 @@ class HabitViewController: UIViewController {
     
     @objc func saveHabit(){
         
-//        let habitsVC = HabitsViewController()
-//        habitsVC.viewDidLoad()
-        
         if self.nameHabitText.text != nil {
             variableText = self.nameHabitText.text!
         }
@@ -240,9 +235,7 @@ class HabitViewController: UIViewController {
         let store = HabitsStore.shared
         store.habits.append(newHabit)
 
-        print(newHabit)
         self.dismiss(animated: true)
-        
     }
     
     @objc func cancelDo() {
@@ -262,11 +255,9 @@ class HabitViewController: UIViewController {
         self.timeLabel.text = time.string(from: self.datePicker.date)
         
         variableTime = self.datePicker.date
-        print(variableTime)
     }
     
     @objc func editHabit() {
-        print("save habits")
         
         if self.nameHabitText.text != nil {
             variableText = self.nameHabitText.text!
@@ -300,7 +291,6 @@ extension HabitViewController: UIColorPickerViewControllerDelegate {
         let color = viewController.selectedColor
         cycleColorButton.backgroundColor = color
         variableColor = color
-        print(variableColor)
     }
     
 }

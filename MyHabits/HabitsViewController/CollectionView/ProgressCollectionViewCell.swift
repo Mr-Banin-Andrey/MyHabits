@@ -11,7 +11,6 @@ class ProgressCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
-    
     private lazy var nameProgressiveView: UILabel = {
         let label = UILabel()
         label.text = "Всё получится!"
@@ -27,11 +26,8 @@ class ProgressCollectionViewCell: UICollectionViewCell {
         progress.translatesAutoresizingMaskIntoConstraints = false
         progress.progress = HabitsStore.shared.todayProgress
         progress.tag = 123
-//        progress.performSelector(onMainThread: #selector(progressDownload), with: self, waitUntilDone: true)
         return progress
     }()
-    
-
     
     //MARK: - Life cycle
     override init(frame: CGRect) {

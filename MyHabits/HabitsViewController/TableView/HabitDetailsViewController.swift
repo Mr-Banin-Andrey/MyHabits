@@ -31,22 +31,16 @@ class HabitDetailsViewController: UIViewController {
         return button
     }()
     
-//    private lazy var cancelButtonTabBar: UIBarButtonItem = {
-//        let button = UIBarButtonItem()
-//        button.target = self
-//        button.style = .plain
-//        button.title = "Отменить"
-//        button.action = #selector(editHabit)
-//        button.tintColor = #colorLiteral(red: 0.631372549, green: 0.0862745098, blue: 0.8, alpha: 1)
-//        return button
-//    }()
-//
     var numberHabitDetailsVC = 0
+    
+    var arriveDates: [Int] = []
+    var indexDate = 100
     
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.indexTable()
         self.navigationController()
         self.setupConstraints()
     }
@@ -64,7 +58,6 @@ class HabitDetailsViewController: UIViewController {
     }
     
     private func navigationController() {
-//        self.navigationItem.title = "Создать"
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
         appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
@@ -74,22 +67,31 @@ class HabitDetailsViewController: UIViewController {
         
         navigationItem.rightBarButtonItems = [saveButtonTabBar]
         navigationItem.rightBarButtonItem = saveButtonTabBar
-        
-//        navigationItem.leftBarButtonItems = [cancelButtonTabBar]
-//        navigationItem.leftBarButtonItem = cancelButtonTabBar
     }
     
+    private func indexTable() {
+        for (i, v) in HabitsStore.shared.dates.enumerated() {
+            
+            if HabitsStore.shared.habits[numberHabitDetailsVC].date.formatted(date: .long, time: .omitted) == v.formatted(date: .long, time: .omitted) {
+                indexDate = i
+            }
+            if i >= indexDate {
+                arriveDates.append(i)
+            }
+        }
+    }
     
     @objc func editHabit() {
         let habitVC = HabitViewController()
         habitVC.numberHabitVC = numberHabitDetailsVC
         habitVC.nameHabitText.text = HabitsStore.shared.habits[numberHabitDetailsVC].name
+        habitVC.variableText = HabitsStore.shared.habits[numberHabitDetailsVC].name
         habitVC.cycleColorButton.backgroundColor = HabitsStore.shared.habits[numberHabitDetailsVC].color
+        habitVC.variableColor = HabitsStore.shared.habits[numberHabitDetailsVC].color
         habitVC.timeLabel.text = HabitsStore.shared.habits[numberHabitDetailsVC].dateString
+        habitVC.variableTime = HabitsStore.shared.habits[numberHabitDetailsVC].date
         habitVC.datePicker.date = HabitsStore.shared.habits[numberHabitDetailsVC].date
-//        habitVC.tabBarController?.tabBar.isHidden = true
         habitVC.alertController.message = "Вы хотите удалить привычку '\(HabitsStore.shared.habits[numberHabitDetailsVC].name)' ?"
-//        habitVC.alertController.preferredStyle = .alert
         habitVC.deleteHabitButton.isHidden = false
         habitVC.saveButtonTabBar.action = #selector(habitVC.editHabit)
         habitVC.cancelButtonTabBar.action = #selector(habitVC.cancelEdit)
@@ -102,12 +104,8 @@ class HabitDetailsViewController: UIViewController {
 extension HabitDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if HabitsStore.shared.habits[numberHabitDetailsVC].date.formatted(date: .long, time: .omitted) == Date().formatted(date: .long, time: .omitted) {
-            return 3
-        }
-        
-        return HabitsStore.shared.dates.count //4
+                
+        return arriveDates.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -116,46 +114,10 @@ extension HabitDetailsViewController: UITableViewDelegate, UITableViewDataSource
             return cell
         }
         
-        //то есть добавить операцию, которая будет добавлять следующий день от даты создания привычки, но чтоб при создании привычки было 3 дня (вчера позавчера сегодня)
-        let abs = HabitsStore.shared.dates.count - 1
-        let abs1 = HabitsStore.shared.dates.count - 2
-        let abs2 = HabitsStore.shared.dates.count - 3
-        let abs3 = HabitsStore.shared.dates.count - 4
-        let abb0 = [abs,abs1,abs2,abs3]
-//        print(HabitsStore.shared.habits[numberHabit].date.formatted(date: .long, time: .omitted), "==", Date().formatted(date: .long, time: .omitted))
+        let index = arriveDates[indexPath.row]
         
-        let dateHabit = HabitsStore.shared.habits[numberHabitDetailsVC].date
-        
-        
-        if HabitsStore.shared.habits[numberHabitDetailsVC].date.formatted(date: .long, time: .omitted) == Date().formatted(date: .long, time: .omitted) {
-            
-            let index = cell.date.tag
-            
-            let abb1 = [abs,abs1,abs2]
-            let abb22 = abb1[indexPath.row]
-            cell.date.text = HabitsStore.shared.trackDateString(forIndex: abb22)
-            if HabitsStore.shared.habit(HabitsStore.shared.habits[numberHabitDetailsVC], isTrackedIn: HabitsStore.shared.dates[abb22]) {
-                cell.checkMark.isHidden = false
-            }
-            return cell
-        }
-        
-//        var arriveDate: [Int] = []
-//        for (i, v) in HabitsStore.shared.dates.enumerated() {
-//            if v.formatted(date: .long, time: .omitted) > dateHabit.formatted(date: .long, time: .omitted) {
-////                print(i, "!!!!!!!",v.formatted(date: .long, time: .omitted), "???????", dateHabit.formatted(date: .long, time: .omitted))
-//
-//                arriveDate.append(i)
-//            }
-//        }
-//        print(arriveDate)
-//        let abb22 = abb0[indexPath.row]
-//        cell.date.text = HabitsStore.shared.trackDateString(forIndex: abb22)
-        
-        
-        
-        cell.date.text = HabitsStore.shared.trackDateString(forIndex: indexPath.row)
-        if HabitsStore.shared.habit(HabitsStore.shared.habits[numberHabitDetailsVC], isTrackedIn: HabitsStore.shared.dates[indexPath.row]) {
+        cell.date.text = HabitsStore.shared.trackDateString(forIndex: index)
+        if HabitsStore.shared.habit(HabitsStore.shared.habits[numberHabitDetailsVC], isTrackedIn: HabitsStore.shared.dates[index]) {
             cell.checkMark.isHidden = false
         }
 
