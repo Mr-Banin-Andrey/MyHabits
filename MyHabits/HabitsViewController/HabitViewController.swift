@@ -123,12 +123,14 @@ class HabitViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Удалить привычку", for: .normal)
         button.setTitleColor(UIColor.systemRed, for: .normal)
-        button.addTarget(self, action: #selector(addTarget), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addTargetShowAlertDeleteHabit), for: .touchUpInside)
         button.isHidden = true
         return button
     }()
     
     var alertController = UIAlertController(title: "Удалить привычку", message: "что-то", preferredStyle: .alert)
+    
+    let alertControllerCheckEmptyText = UIAlertController(title: "Ошибка", message: "название должно быть заполнено", preferredStyle: .alert)
     
     var titleView = "Создать"
     
@@ -141,7 +143,8 @@ class HabitViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         self.navigationController()
         self.setupConstraints()
-        self.setupAlertController()
+        self.setupAlertControllerDeleteHabit()
+        self.setupAlertControllerCheckEmptyText()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -217,25 +220,33 @@ class HabitViewController: UIViewController {
         realTimeVar = df.string(from: date)
     }
     
-    func setupAlertController() {
+    func setupAlertControllerDeleteHabit() {
         alertController.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: { _ in
             self.deleteHabit()
         }))
         alertController.addAction(UIAlertAction(title: "Отменить", style: .cancel))
     }
     
+    func setupAlertControllerCheckEmptyText() {
+        alertControllerCheckEmptyText.addAction(UIAlertAction(title: "Попробовать ещё раз", style: .cancel))
+    }
     
     @objc func saveHabit(){
         
-        if self.nameHabitText.text != nil {
-            variableText = self.nameHabitText.text!
+        if self.nameHabitText.text == "" {
+            addTargetShowAlertEmptyTextField()
+        } else {
+            if self.nameHabitText.text != nil {
+                variableText = self.nameHabitText.text!
+            }
+            
+            let newHabit = Habit(name: variableText, date: variableTime, color: variableColor)
+            let store = HabitsStore.shared
+            store.habits.append(newHabit)
+
+            self.dismiss(animated: true)
         }
         
-        let newHabit = Habit(name: variableText, date: variableTime, color: variableColor)
-        let store = HabitsStore.shared
-        store.habits.append(newHabit)
-
-        self.dismiss(animated: true)
     }
     
     @objc func cancelDo() {
@@ -259,15 +270,20 @@ class HabitViewController: UIViewController {
     
     @objc func editHabit() {
         
-        if self.nameHabitText.text != nil {
-            variableText = self.nameHabitText.text!
+        if self.nameHabitText.text == "" {
+            addTargetShowAlertEmptyTextField()
+        } else {
+            
+            if self.nameHabitText.text != nil {
+                variableText = self.nameHabitText.text!
+            }
+            
+            HabitsStore.shared.habits[numberHabitVC].name = variableText
+            HabitsStore.shared.habits[numberHabitVC].date = variableTime
+            HabitsStore.shared.habits[numberHabitVC].color = variableColor
+            
+            self.navigationController?.popToRootViewController(animated: true)
         }
-        
-        HabitsStore.shared.habits[numberHabitVC].name = variableText
-        HabitsStore.shared.habits[numberHabitVC].date = variableTime
-        HabitsStore.shared.habits[numberHabitVC].color = variableColor
-        
-        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @objc func cancelEdit() {
@@ -279,8 +295,12 @@ class HabitViewController: UIViewController {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-    @objc func addTarget () {
+    @objc func addTargetShowAlertDeleteHabit () {
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func addTargetShowAlertEmptyTextField () {
+        self.present(alertControllerCheckEmptyText, animated: true, completion: nil)
     }
 }
 
